@@ -1,7 +1,10 @@
 package com.aliaskar.EcommerceSpringBoot.service;
 
-import com.aliaskar.EcommerceSpringBoot.dto.user.ResponseDto;
 import com.aliaskar.EcommerceSpringBoot.dto.user.SignUpDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SigninResponseDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SinginDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SingnupResponseDto;
+import com.aliaskar.EcommerceSpringBoot.exception.AuthenticationFaildException;
 import com.aliaskar.EcommerceSpringBoot.exception.CustomException;
 import com.aliaskar.EcommerceSpringBoot.model.AuthenticationToken;
 import com.aliaskar.EcommerceSpringBoot.model.User;
@@ -27,7 +30,7 @@ public class UserService {
     AuthenticationService authenticationService;
 
     @Transactional
-    public ResponseDto signup(SignUpDto signUpDto) {
+    public SingnupResponseDto signup(SignUpDto signUpDto) {
 //        check if user already present
         if (Objects.nonNull(userRepository.findByEmail(signUpDto.getEmail()))) {
             throw new CustomException("user already present");
@@ -52,8 +55,8 @@ public class UserService {
         AuthenticationToken authenticationToken = new AuthenticationToken(user);
         authenticationService.saveConfirmationToken(authenticationToken);
 
-        ResponseDto responseDto = new ResponseDto("sucess", "dummy response");
-        return responseDto;
+        SingnupResponseDto singnupResponseDto = new SingnupResponseDto("sucess", "user created successfully");
+        return singnupResponseDto;
 
 
     }
@@ -66,4 +69,37 @@ public class UserService {
                 .printHexBinary(digest).toUpperCase();
         return hash;
     }
+
+    public SigninResponseDto singin(SinginDto singinDto) {
+//        find user by email
+        User user = userRepository.findByEmail(singinDto.getEmail());
+        if (Objects.isNull(user)) {
+            throw new AuthenticationFaildException("User is not valid");
+
+            //        hash the password
+        }
+        try {
+            if (!user.getPassword().equals(hashPaswword(singinDto.getPassword()))) {
+                throw new AuthenticationFaildException("wrong password");
+
+            }
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+
+//        Compare the password in DB
+
+//        If password is match
+//        then retrive the token
+        AuthenticationToken token = authenticationService.getToken(user);
+        if (Objects.isNull(token)){
+            throw new CustomException("token is not present");
+        }
+        return new SigninResponseDto("success",token.getToken());
+
+
+//        return the response
+    }
+
 }
