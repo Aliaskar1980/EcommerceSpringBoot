@@ -3,11 +3,11 @@ package com.aliaskar.EcommerceSpringBoot.dto.user;
 /**
  * Created by Admin on 25.04.2022
  */
-public class ResponseDto {
+public class SingnupResponseDto {
     private String status;
     private String message;
 
-    public ResponseDto(String status, String message) {
+    public SingnupResponseDto(String status, String message) {
         this.status = status;
         this.message = message;
     }

@@ -1,9 +1,10 @@
 package com.aliaskar.EcommerceSpringBoot.controller;
 
-import com.aliaskar.EcommerceSpringBoot.dto.user.ResponseDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SigninResponseDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SinginDto;
+import com.aliaskar.EcommerceSpringBoot.dto.user.SingnupResponseDto;
 import com.aliaskar.EcommerceSpringBoot.dto.user.SignUpDto;
 import com.aliaskar.EcommerceSpringBoot.service.UserService;
-import io.swagger.v3.oas.annotations.security.OAuthFlow;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,11 +23,15 @@ public class UserController {
 
 //    sign up
     @PostMapping("/signup")
-    public ResponseDto signup(@RequestBody SignUpDto signUpDto){
+    public SingnupResponseDto signup(@RequestBody SignUpDto signUpDto){
         return userService.signup(signUpDto);
 
     }
 
 
 //    sign in
+    @PostMapping("/signin")
+    public SigninResponseDto singin(@RequestBody SinginDto singinDto){
+        return userService.singin(singinDto);
+    }
 }
