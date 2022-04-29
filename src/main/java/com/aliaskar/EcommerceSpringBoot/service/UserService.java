@@ -87,19 +87,13 @@ public class UserService {
             e.printStackTrace();
         }
 
-
-//        Compare the password in DB
-
-//        If password is match
-//        then retrive the token
         AuthenticationToken token = authenticationService.getToken(user);
-        if (Objects.isNull(token)){
+        if (Objects.isNull(token)) {
             throw new CustomException("token is not present");
         }
-        return new SigninResponseDto("success",token.getToken());
+        return new SigninResponseDto("success", token.getToken());
 
 
-//        return the response
     }
 
 }
