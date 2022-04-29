@@ -1,5 +1,6 @@
 package com.aliaskar.EcommerceSpringBoot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,7 @@ public class Product {
 
 //    many to one relationship
     @ManyToOne
+    @JsonIgnore
     @JoinColumn( name = "category_id")
     Category category;
 
