@@ -36,7 +36,6 @@ public class WishListController {
         User user = authenticationService.getUser(token);
 
         WishList wishList = new WishList(user, product);
-        List<WishList> wishLists = new ArrayList<>();
 
         wishListService.checkProduct(product, user);
 
