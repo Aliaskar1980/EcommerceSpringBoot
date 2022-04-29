@@ -1,6 +1,7 @@
 package com.aliaskar.EcommerceSpringBoot.service;
 
 import com.aliaskar.EcommerceSpringBoot.dto.ProductDto;
+import com.aliaskar.EcommerceSpringBoot.exception.ProductNotExistsExpetion;
 import com.aliaskar.EcommerceSpringBoot.model.Category;
 import com.aliaskar.EcommerceSpringBoot.model.Product;
 import com.aliaskar.EcommerceSpringBoot.repository.ProductRepo;
@@ -35,6 +36,7 @@ public class ProductService {
         productDto.setDescription(product.getDescription());
         productDto.setCategoryId(product.getCategory().getId());
         productDto.setPrice(product.getPrice());
+        productDto.setImageUrl(product.getImageUrl());
         productDto.setId(product.getId());
         return productDto;
     }
@@ -61,5 +63,13 @@ public class ProductService {
         product.setPrice(productDto.getPrice());
         productRepo.save(product);
 
+    }
+
+    public Product findById(Integer productId) {
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        if (optionalProduct.isEmpty()){
+            throw new ProductNotExistsExpetion("product is invalid" + productId);
+        }
+        return optionalProduct.get();
     }
 }
